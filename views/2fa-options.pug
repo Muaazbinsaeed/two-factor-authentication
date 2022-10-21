@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  .modal-dialog
+    .modal-content
+      // Modal Header
+      .modal-header
+        button.close(type="button", data-dismiss="modal")
+          span(aria-hidden="true")
+            a(href="/")  ×
+          span.sr-only Close
+        h4#myModalLabel.modal-title
+          | Select Preferred 2FA Option
+      // Modal Body
+      .modal-body
+        form(role='form' method='POST' action='/2fa/options')
+          div.form-group(hidden)
+            label(for='twofa_preferred') Preferred 2FA Method:
+            input#twofa_preferred.form-control(type='text', name='twofa_preferred', value='authApp')
+          div.form-group
+            label(for='authApp') Auth Apps:
+            input#authApp.form-control(disabled, type='text', name='info', value='For Example: Google Autheticator etc.')
+          button.btn.btn-primary(type="submit") Auth App
+        hr
+        form(role='form' method='POST' action='/2fa/options')
+          div.form-group(hidden)
+            label(for='twofa_preferred') Preferred 2FA Method:
+            input#twofa_preferred.form-control(type='text', name='twofa_preferred', value='email')
+          div.form-group
+            label(for='email') Email:
+            input#email.form-control(type='email', name='email', required)
+          button.btn.btn-primary(type="submit") Email
+        // Display Messages if any
+        if messages 
+          ul
+            for message in messages
+              li!= message
+      // Modal Footer
+      .modal-footer

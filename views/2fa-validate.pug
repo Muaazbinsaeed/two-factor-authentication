@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  .modal-dialog
+    .modal-content
+      // Modal Header
+      .modal-header
+        button.close(type="button", data-dismiss="modal")
+          span(aria-hidden="true")
+            a(href="/")  ×
+          span.sr-only Close
+        h4#myModalLabel.modal-title
+          | Enter 2FA Token
+      // Modal Body
+      .modal-body
+        form(role='form' method='POST' action='/2fa/validate')
+          div.form-group(hidden)
+            label(for='id') id:
+            input#id.form-control(type='text', name='id', value=id)
+          div.form-group
+            label(for='token') Token:
+            input#token.form-control(type='text', name='token')
+          button.btn.btn-primary(type="submit") Submit
+        // Display Messages if any
+        if messages 
+          ul
+            for message in messages
+              li!= message
+      // Modal Footer
+      .modal-footer

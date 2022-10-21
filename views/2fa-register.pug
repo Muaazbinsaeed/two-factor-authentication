@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          button.close(type="button", data-dismiss="modal")
+            span(aria-hidden="true")
+              a(href="/")  ×
+            span.sr-only Close
+          h4#myModalLabel.modal-title
+            | Register 2FA
+        // Modal Body
+        .modal-body
+          form(role='form' method='POST' action='/2fa/register')
+            div.form-group
+              label(for='base32') Secret:
+              input#base32.form-control(disabled, type='text', value=secret, name='base32')
+            if (method === 'authApp')
+              div.form-group
+                p QR-Code:            
+                img(src=qrcode, alt="qr-code of secret")
+            div.form-group
+              label(for='token') Token:
+              input#token.form-control(type='text', name='token')
+            button.btn.btn-primary(type="submit") Register
+          // Display Messages if any
+          if messages 
+            ul
+              for message in messages
+                li!= message
+        // Modal Footer
+        .modal-footer

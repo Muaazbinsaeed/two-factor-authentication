@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          button.close(type="button", data-dismiss="modal")
+            span(aria-hidden="true")
+              a(href="/")  ×
+            span.sr-only Close
+          h4#myModalLabel.modal-title
+            | SignUp
+        // Modal Body
+        .modal-body
+          form(role='form' method='POST' action='/user/signup')
+            div.form-group
+              label(for='first_name') First Name:
+              input#first_name.form-control(
+                type='text',
+                name='first_name',
+                value= (undefined===user ? '' : user.first_name)
+                required
+              )
+            div.form-group
+              label(for='second_name') Second Name:
+              input#second_name.form-control(
+                type='text',
+                name='second_name',
+                value= (undefined===user ? '' : user.second_name)
+              )
+            div.form-group
+              label(for='username') Username:
+              input#username.form-control(
+                type='text',
+                name='username',
+                value= (undefined===user ? '' : user.username)
+                required
+              )
+            div.form-group
+              label(for='password') Password:
+              input#password.form-control(
+                type='password',
+                name='password',
+                value= (undefined===user ? '' : user.password),
+                required
+              )
+            div.form-group
+              label(for='passwordConfirmation') Password:
+              input#passwordConfirmation.form-control(
+                type='password',
+                name='passwordConfirmation',
+                value= (undefined===user ? '' : user.passwordConfirmation),
+                required
+              )
+            button.btn.btn-primary(type="submit") SignUp
+          // Display Errors if any
+          if errors
+            ul
+              for error in errors
+                li!= error.msg
+          // Display Messages if any
+          if messages 
+            ul
+              for message in messages
+                li!= message
+        // Modal Footer
+        .modal-footer
+          form(role='form' method='GET' action='/user/login')
+            span Already a User? 
+            button.btn.btn-primary(type="submit") Login
+

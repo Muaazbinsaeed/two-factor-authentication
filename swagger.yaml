@@ -1,0 +1,258 @@
+openapi: "3.0.2"
+info:
+  title: 2FA Demo
+  description: API for 2FA Demo
+  version: "1.0.0"
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: http://localhost:3000
+paths:
+  /:
+    get:
+      tags:
+        - "HomePage"
+      summary: Home Page
+      description: |
+        Home Page, which shows the status of current user
+        and current 2FA policy
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>Home Page</html>
+  /user/login:
+    get:
+      tags:
+        - "User"
+      summary: Get Login Page
+      description: |
+        This operation is done to get an html response,
+        which render a login form
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>Login Page</html>
+    post:
+      tags:
+        - "User"
+      summary: Post Login Request
+      description: |
+        This operation is done to send login credentials which
+        are then validated before logging in the user
+      requestBody:
+        required: true
+        description: Form data containing login credentials
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>Login Page</html>
+  /user/signup:
+    get:
+      tags:
+        - "User"
+      summary: Get Sign-up Page
+      description: |
+        This operation is done to get an html response,
+        which render a signup form
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>Signup Page</html>
+    post:
+      tags:
+        - "User"
+      summary: Post Sign-up Request
+      description: |
+        This operation is done to send signup data which
+        is then validated before adding a new user
+      requestBody:
+        required: true
+        description: Form data containing Sign-up credentials
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/SignupUser"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>Signup Page</html>
+  /user/logout:
+    get:
+      tags:
+        - "User"
+      summary: Logout Current User
+      description: |
+        This operation is used to logout the current user, expire
+        the current session and redirect to Home Page
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>Home Page</html>
+  /2fa/option:
+    get:
+      tags:
+        - "2FA"
+      summary: Get 2FA Option Page
+      description: |
+        This operation is done to get an html response,
+        which render 2 2FA forms, one for 'authApp' method and
+        other one for 'email' method
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>2FA Options Page</html>
+    post:
+      tags:
+        - "2FA"
+      summary: Choose preferred 2FA method
+      description: |
+        This operation is done to send data regarding
+        preferred 2FA method
+      requestBody:
+        required: true
+        description: Form data containing 2FA preferred method info
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              anyOf:
+                - $ref: "#/components/schemas/PreferEmail"
+                - $ref: "#/components/schemas/PreferAuthApp"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>2FA Option Page</html>
+  /2fa/register:
+    get:
+      tags:
+        - "2FA"
+      summary: Get 2FA Registration Page
+      description: |
+        This operation is done to get an html response,
+        which render a form to input token
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>2FA Registration Page</html>
+    post:
+      tags:
+        - "2FA"
+      summary: Send Token for Registration
+      description: |
+        This operation is done to send token which is then 
+        validated before enabling 2FA for the user
+      requestBody:
+        required: true
+        description: Form data containing Registration token
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/EnterToken"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>2FA Registration Page</html>
+  /2fa/validate:
+    post:
+      tags:
+        - "2FA"
+      summary: Send Token for Validation
+      description: |
+        This operation is done to send token which is then 
+        validated before logging in the user
+      requestBody:
+        required: true
+        description: Form data containing Validation token
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/EnterToken"
+      responses:
+        "200":
+          description: OK
+          content:
+            text/html:
+              example: <html>2FA Validation Page</html>
+components:
+  schemas:
+    LoginUser:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    SignupUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+        second_name:
+          type: string
+        username:
+          type: string
+          uniqueItems: true
+        password:
+          type: string
+        passwordConfirmation:
+          type: string
+      required:
+        - first_name
+        - username
+        - password
+        - passwordConfirmation
+    PreferEmail:
+      type: object
+      properties:
+        twofa_preferred:
+          type: string
+        email:
+          type: string
+      required:
+        - twofa_preferred
+        - email
+    PreferAuthApp:
+      type: object
+      properties:
+        twofa_preferred:
+          type: string
+      required:
+        - twofa_preferred
+    EnterToken:
+      type: object
+      properties:
+        token:
+          type: string
+      required:
+        - token
+tags:
+  - name: HomePage
+  - name: User
+  - name: 2FA

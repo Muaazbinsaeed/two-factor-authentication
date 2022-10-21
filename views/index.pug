@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  hr
+  if currentUser
+    p Welcome User: #{currentUser.first_name}
+    if !currentUser.twofa_enabled
+      hr
+      button 
+        a(href="/2fa/options") Enable 2FA
+    if currentUser.twofa_enabled
+      hr
+      p 2FA Enabled
+    hr
+    button 
+      a(href="/user/logout") Logout
+  else 
+    button
+      a(href="/user/login") Login

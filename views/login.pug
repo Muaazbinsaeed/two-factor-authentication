@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  .modal-dialog
+      .modal-content
+        // Modal Header
+        .modal-header
+          button.close(type="button", data-dismiss="modal")
+            span(aria-hidden="true")
+              a(href="/")  ×
+            span.sr-only Close
+          h4#myModalLabel.modal-title
+            | Login
+        // Modal Body
+        .modal-body
+          form(role='form' method='POST' action='/user/login')
+            div.form-group
+              label(for='name') Username:
+              input#name.form-control(
+                type='text',
+                placeholder='username',
+                name='username',
+                value= (undefined===user ? '' : user.username),
+              )
+            div.form-group
+              label(for='password') Password:
+              input#password.form-control(
+                type='password',
+                placeholder='********'
+                name='password',
+                value= (undefined===user ? '' : user.password),
+              )
+            button.btn.btn-primary(type="submit") Login
+          // Display Messages if any
+          if messages 
+            ul
+              for message in messages
+                li!= message
+        // Modal Footer
+        .modal-footer
+          form(role='form' method='GET' action='/user/signup')
+            span Not a User? 
+            button.btn.btn-primary(type="submit") SignUp
+
